@@ -1,11 +1,11 @@
 {
   "functions": {
+    "source": "functions",
     "targets": [
-      "higgsfield_api"
+      "higgsfield_api_node"
     ],
     "ignore": [
-      "*.log",
-      "__pycache__"
+      "*.log"
     ]
   },
   "client": {

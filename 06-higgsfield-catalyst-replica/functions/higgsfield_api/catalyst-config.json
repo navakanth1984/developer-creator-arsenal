@@ -1,6 +1,11 @@
 {
-  "name": "higgsfield_api",
-  "type": "AdvancedIO",
-  "stack": "python3.11",
-  "main": "main.py"
+  "deployment": {
+    "name": "higgsfield_api",
+    "stack": "python_3_12",
+    "type": "advancedio",
+    "env_variables": {}
+  },
+  "execution": {
+    "main": "main.py"
+  }
 }

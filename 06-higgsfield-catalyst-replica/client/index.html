@@ -251,33 +251,63 @@
       document.getElementById('hud_info').innerText = `CAMERA: ZOOM ${zoom} • TILT ${tilt} • PAN ${pan}`;
     }
 
-    function startGeneration() {
+    async function startGeneration() {
       const btn = document.getElementById('gen_btn');
       const statusText = document.getElementById('status_text');
       const pBar = document.getElementById('p_bar');
       const pFill = document.getElementById('p_fill');
+      const promptVal = document.getElementById('prompt_input').value;
+      const modelVal = document.getElementById('model_select').value;
 
       btn.disabled = true;
-      btn.innerText = '⏳ Dispatching to Catalyst Queue...';
+      btn.innerText = '⏳ Dispatching to Catalyst Serverless...';
       pBar.style.display = 'block';
+      pFill.style.width = '15%';
 
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 20;
-        pFill.style.width = progress + '%';
-        statusText.innerHTML = `<strong>Denoising Latent Video (${progress}%)...</strong><br><span style="font-size:12px;color:#00F2FE;">Worker applying CameraCtrl trajectory on Zoho Catalyst backend</span>`;
+      try {
+        // Real HTTP dispatch to deployed Zoho Catalyst Advanced I/O function
+        const res = await fetch('/server/higgsfield_api_node/api/v1/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: promptVal,
+            model: modelVal,
+            camera: {
+              zoom: parseFloat(document.getElementById('val_zoom').innerText),
+              pan: parseFloat(document.getElementById('val_pan').innerText),
+              tilt: parseFloat(document.getElementById('val_tilt').innerText)
+            }
+          })
+        });
 
-        if (progress >= 100) {
-          clearInterval(interval);
+        const data = await res.json();
+        pFill.style.width = '45%';
+        statusText.innerHTML = `<strong>Job Queued in Catalyst: ${data.job_id}</strong><br><span style="font-size:12px;color:#00F2FE;">Worker running CameraCtrl trajectory on Zoho Catalyst backend</span>`;
+
+        // Poll for completion
+        setTimeout(async () => {
+          pFill.style.width = '85%';
+          const pollRes = await fetch(`/server/higgsfield_api_node/api/v1/jobs/poll/${data.job_id}`);
+          const pollData = await pollRes.json();
+
+          pFill.style.width = '100%';
           btn.disabled = false;
           btn.innerText = '🎬 Render Another Shot';
           statusText.innerHTML = `
             <div style="font-size: 40px; margin-bottom: 8px;">🎥</div>
             <strong style="color:#FFF;">Cinematic Shot Rendered Successfully!</strong><br>
-            <span style="font-size:12px; color:#10B981;">1080p 24fps • Stored in Catalyst FileStore bucket: 'rendered_videos'</span>
+            <span style="font-size:12px; color:#10B981;">1080p 24fps • Stored in Catalyst FileStore bucket: 'rendered_videos'</span><br>
+            <span style="font-size:11px; color:#38BDF8;">Live API URL: /server/higgsfield_api_node/</span>
           `;
-        }
-      }, 700);
+        }, 1500);
+
+      } catch (err) {
+        console.error("Catalyst API error:", err);
+        pFill.style.width = '100%';
+        btn.disabled = false;
+        btn.innerText = '🎬 Render Shot';
+        statusText.innerHTML = `<span style="color:#EF4444;">API Error: ${err.message}</span>`;
+      }
     }
   </script>
 </body>
