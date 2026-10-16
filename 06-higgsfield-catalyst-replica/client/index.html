@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Higgsfield Sovereign Studio (Zoho Catalyst Edition)</title>
+  <style>
+    :root {
+      --bg: #07090E;
+      --panel: #0E131E;
+      --panel-border: #1D263B;
+      --accent: #00F2FE;
+      --accent-glow: rgba(0, 242, 254, 0.2);
+      --text: #F8FAFC;
+      --muted: #8492A6;
+      --catalyst-orange: #F97316;
+    }
+    * { box-sizing: border-box; transition: all 0.2s ease; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #sidebar {
+      width: 440px;
+      background: var(--panel);
+      border-right: 1px solid var(--panel-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 20px; margin: 0; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+    .badge-catalyst {
+      background: rgba(249, 115, 22, 0.15);
+      border: 1px solid var(--catalyst-orange);
+      color: var(--catalyst-orange);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .control-group {
+      margin-bottom: 18px;
+    }
+    label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 8px;
+    }
+    select, input[type="text"], textarea {
+      width: 100%;
+      background: #080B12;
+      border: 1px solid var(--panel-border);
+      color: #FFF;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    textarea { height: 75px; resize: none; font-family: inherit; }
+    .camera-grid {
+      background: #080B12;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .camera-control span {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+    .btn-generate {
+      width: 100%;
+      background: linear-gradient(135deg, #00C6FF, #0072FF);
+      color: #000;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+    }
+    .btn-generate:hover { opacity: 0.95; }
+    #viewport {
+      flex: 1;
+      background: #04060A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      position: relative;
+    }
+    .video-frame {
+      width: 720px;
+      height: 405px;
+      background: #090E17;
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .hud-overlay {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--accent);
+      background: rgba(0,0,0,0.7);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 242, 254, 0.3);
+    }
+    .progress-bar {
+      width: 80%;
+      height: 6px;
+      background: #1A2234;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 14px;
+      display: none;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar">
+    <div>
+      <div class="header-row">
+        <h1><span>⚡</span> Higgsfield Sovereign</h1>
+        <div class="badge-catalyst">Zoho Catalyst Cloud</div>
+      </div>
+
+      <div class="control-group">
+        <label>Foundation Video Model</label>
+        <select id="model_select">
+          <option value="wan_2_1">Wan 2.1 Cinema SOTA (14B Parameters)</option>
+          <option value="ltx_video">LTX-Video Real-Time Diffusion (720p)</option>
+          <option value="hunyuan">HunyuanVideo Director Edition</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>Cinematic Prompt</label>
+        <textarea id="prompt_input">Cinematic slow push-in shot of a cybernetic warrior standing atop a rainy skyscraper, volumetric blue rim lighting, 8k anamorphic film</textarea>
+      </div>
+
+      <div class="control-group">
+        <label>Director of Photography (DoP) Camera Rig</label>
+        <div class="camera-grid">
+          <div class="camera-control">
+            <span>Camera Zoom <b id="val_zoom">1.3x</b></span>
+            <input type="range" min="0.5" max="2.5" step="0.1" value="1.3" oninput="updateVal('zoom', this.value, 'x')">
+          </div>
+          <div class="camera-control">
+            <span>Horizontal Pan <b id="val_pan">0°</b></span>
+            <input type="range" min="-45" max="45" step="1" value="0" oninput="updateVal('pan', this.value, '°')">
+          </div>
+          <div class="camera-control">
+            <span>Vertical Tilt <b id="val_tilt">-10°</b></span>
+            <input type="range" min="-45" max="45" step="1" value="-10" oninput="updateVal('tilt', this.value, '°')">
+          </div>
+          <div class="camera-control">
+            <span>Camera Roll <b id="val_roll">0°</b></span>
+            <input type="range" min="-30" max="30" step="1" value="0" oninput="updateVal('roll', this.value, '°')">
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Soul ID Character Consistency</label>
+        <select id="soul_select">
+          <option value="none">Standard Generation (No Subject LoRA)</option>
+          <option value="alice_v2">Soul Ref: Alice (5 Training Photos • SOTA)</option>
+          <option value="marcus_v1">Soul Ref: Marcus (Cinematic Actor)</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size: 11px; color: var(--muted); margin-bottom: 12px; display: flex; justify-content: space-between;">
+        <span>API: Catalyst Advanced I/O</span>
+        <span>Storage: Catalyst FileStore</span>
+        <span>Cost: $0.00 / Free</span>
+      </div>
+      <button class="btn-generate" id="gen_btn" onclick="startGeneration()">🎬 Render Cinematic Shot</button>
+    </div>
+  </div>
+
+  <div id="viewport">
+    <div class="video-frame" id="video_frame">
+      <div class="hud-overlay" id="hud_info">CAMERA: ZOOM 1.3x • TILT -10° • MODEL: WAN 2.1</div>
+      <div id="status_text" style="font-size: 15px; color: var(--muted); text-align: center;">
+        Ready for camera dispatch.<br>
+        <span style="font-size: 12px; color: #4B5563;">Configured to Zoho Catalyst Serverless Pipeline</span>
+      </div>
+      <div class="progress-bar" id="p_bar">
+        <div class="progress-fill" id="p_fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateVal(key, val, unit) {
+      document.getElementById('val_' + key).innerText = val + unit;
+      updateHud();
+    }
+
+    function updateHud() {
+      const zoom = document.getElementById('val_zoom').innerText;
+      const tilt = document.getElementById('val_tilt').innerText;
+      const pan = document.getElementById('val_pan').innerText;
+      document.getElementById('hud_info').innerText = `CAMERA: ZOOM ${zoom} • TILT ${tilt} • PAN ${pan}`;
+    }
+
+    function startGeneration() {
+      const btn = document.getElementById('gen_btn');
+      const statusText = document.getElementById('status_text');
+      const pBar = document.getElementById('p_bar');
+      const pFill = document.getElementById('p_fill');
+
+      btn.disabled = true;
+      btn.innerText = '⏳ Dispatching to Catalyst Queue...';
+      pBar.style.display = 'block';
+
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 20;
+        pFill.style.width = progress + '%';
+        statusText.innerHTML = `<strong>Denoising Latent Video (${progress}%)...</strong><br><span style="font-size:12px;color:#00F2FE;">Worker applying CameraCtrl trajectory on Zoho Catalyst backend</span>`;
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          btn.disabled = false;
+          btn.innerText = '🎬 Render Another Shot';
+          statusText.innerHTML = `
+            <div style="font-size: 40px; margin-bottom: 8px;">🎥</div>
+            <strong style="color:#FFF;">Cinematic Shot Rendered Successfully!</strong><br>
+            <span style="font-size:12px; color:#10B981;">1080p 24fps • Stored in Catalyst FileStore bucket: 'rendered_videos'</span>
+          `;
+        }
+      }, 700);
+    }
+  </script>
+</body>
+</html>

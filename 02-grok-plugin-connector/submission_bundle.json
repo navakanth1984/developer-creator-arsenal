@@ -1,0 +1,5 @@
+{
+  "status": "ready_for_xai_marketplace_submission",
+  "portal": "https://x.ai/bot/marketplace/submit-a-plugin",
+  "cli_install_command": "grok plugin install ./02-grok-plugin-connector"
+}

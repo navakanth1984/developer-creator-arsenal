@@ -1,0 +1,47 @@
+<svml version="1.0" format="short-vertical" fps="30" width="1080" height="1920">
+  <meta>
+    <title>AI Software Cloning in 60 Seconds</title>
+    <author>Autonomous Creator Labs</author>
+    <target_duration_sec>58</target_duration_sec>
+  </meta>
+
+  <!-- Audio Layer: Primary Voiceover Track -->
+  <audio_track id="voiceover_primary" src="audio/voiceover.mp3">
+    <!-- Spoken Words with High-Precision Millisecond Alignment -->
+    <word id="w1" start="0" end="320">Stop</word>
+    <word id="w2" start="330" end="680">paying</word>
+    <word id="w3" start="690" end="1100">fifty</word>
+    <word id="w4" start="1110" end="1540">dollars</word>
+    <word id="w5" start="1550" end="1820">every</word>
+    <word id="w6" start="1830" end="2250">month</word>
+    <word id="w7" start="2260" end="2500">for</word>
+    <word id="w8" start="2510" end="3100">bloated</word>
+    <word id="w9" start="3110" end="3700">software.</word>
+    <word id="w10" start="3800" end="4100">Here</word>
+    <word id="w11" start="4110" end="4350">is</word>
+    <word id="w12" start="4360" end="4600">how</word>
+    <word id="w13" start="4610" end="4850">AI</word>
+    <word id="w14" start="4860" end="5300">clones</word>
+    <word id="w15" start="5310" end="5600">it</word>
+    <word id="w16" start="5610" end="5800">in</word>
+    <word id="w17" start="5810" end="6200">four</word>
+    <word id="w18" start="6210" end="6900">minutes.</word>
+  </audio_track>
+
+  <!-- Visual Timeline: Anchored to Words rather than brittle static timestamps -->
+  <scene id="scene_hook" anchor_start="w1" anchor_end="w9" transition="whip_left">
+    <background color="#0A0B0E" />
+    <element type="badge" anchor="w1" text="🚨 AI RADICAL SHIFT" style="bg-red-600 text-white font-bold" />
+    <element type="kinetic_text" anchor_start="w1" anchor_end="w9" highlight_color="#EF4444" font_size="64px" position="center" />
+    <sound_effect anchor="w1" src="sfx/bass_drop.mp3" volume="0.8" />
+    <overlay type="image" anchor="w4" src="assets/expensive_bill.png" animation="shake_and_fade" />
+  </scene>
+
+  <scene id="scene_solution" anchor_start="w10" anchor_end="w18" transition="zoom_in">
+    <background color="#0F172A" />
+    <element type="badge" anchor="w10" text="⚡ REA ENGINE" style="bg-cyan-500 text-black font-extrabold" />
+    <element type="screen_recording" anchor="w13" src="assets/terminal_clone_demo.mp4" zoom="1.15" />
+    <element type="kinetic_text" anchor_start="w10" anchor_end="w18" highlight_color="#06B6D4" font_size="58px" position="bottom" />
+    <sound_effect anchor="w14" src="sfx/keyboard_clack.mp3" volume="0.6" />
+  </scene>
+</svml>

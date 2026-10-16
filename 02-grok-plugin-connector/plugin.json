@@ -1,0 +1,57 @@
+{
+  "$schema": "https://x.ai/schemas/grok-plugin-v1.json",
+  "name": "enterprise-code-security-auditor",
+  "version": "1.0.0",
+  "displayName": "Enterprise Code & Security Auditor",
+  "description": "Deeply audits codebase architecture, detects secret leaks, scans API endpoints, and enforces software governance for Grok agents.",
+  "author": {
+    "name": "Autonomous Creator Labs",
+    "url": "https://github.com/developer-creator-arsenal"
+  },
+  "homepage": "https://x.ai/bot/marketplace",
+  "entrypoint": "mcp_server.py",
+  "runtime": "python",
+  "protocol": "mcp",
+  "permissions": [
+    "filesystem:read",
+    "network:outbound"
+  ],
+  "tools": [
+    {
+      "name": "audit_codebase_security",
+      "description": "Performs static security analysis on code files, detecting hardcoded credentials, unescaped queries, and insecure dependencies.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "directory_path": {
+            "type": "string",
+            "description": "Absolute or relative path to the codebase to inspect"
+          },
+          "strict_mode": {
+            "type": "boolean",
+            "description": "Whether to fail on low-severity warnings"
+          }
+        },
+        "required": ["directory_path"]
+      }
+    },
+    {
+      "name": "generate_remediation_patch",
+      "description": "Generates actionable code patches and refactoring diffs for flagged vulnerabilities.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "vulnerability_id": {
+            "type": "string",
+            "description": "Unique identifier of the vulnerability"
+          },
+          "target_file": {
+            "type": "string",
+            "description": "File path where remediation should be applied"
+          }
+        },
+        "required": ["vulnerability_id", "target_file"]
+      }
+    }
+  ]
+}

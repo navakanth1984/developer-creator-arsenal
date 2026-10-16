@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments & Dependencies
+node_modules/
+.env*
+!.env.example
+venv/
+env/
+.venv/
+
+# Catalyst & Cloud Build Outputs
+.catalyst/
+*.log
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

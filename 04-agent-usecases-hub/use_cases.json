@@ -1,0 +1,46 @@
+[
+  {
+    "id": "case-001",
+    "title": "Full-Stack Clean-Room Software Cloning",
+    "category": "Software & DevOps",
+    "target_agents": [
+      "Claude Code",
+      "Grok Build",
+      "Antigravity"
+    ],
+    "problem_statement": "Overpaying $50/mo for bloated single-purpose developer utilities.",
+    "workflow_summary": "Uses REA to inspect binary bundles, extract API routes and state types, then generates a Next.js + FastAPI clone in 10 minutes.",
+    "reusable_prompt": "Analyze this binary using REA. Extract all REST endpoints, generate an OpenAPI 3.1.0 specification, and scaffold a clean-room Tailwind UI replacement.",
+    "estimated_time_saved_hrs": 18.5,
+    "source_attribution": "@AlexFinn on X / REA Tools"
+  },
+  {
+    "id": "case-002",
+    "title": "Autonomous AI Receptionist & Call Dispatch",
+    "category": "Work & Operations",
+    "target_agents": [
+      "Grok Voice 3.0",
+      "ElevenLabs Agents"
+    ],
+    "problem_statement": "Small clinics and plumbing businesses missing after-hours emergency calls.",
+    "workflow_summary": "Hooks Grok Voice 3.0 to a Twilio SIP trunk and Google Calendar API for zero-latency appointment scheduling and triage.",
+    "reusable_prompt": "You are a front-desk receptionist for Dr. Smith Dental. Greet warmly, triage emergency vs routine inquiries, and invoke check_calendar() to book open slots.",
+    "estimated_time_saved_hrs": 35.0,
+    "source_attribution": "Grok Marketplace"
+  },
+  {
+    "id": "case-003",
+    "title": "Programmatic Word-Anchored Short-Form Video Cloning",
+    "category": "Content & Creative",
+    "target_agents": [
+      "Hypit",
+      "Codex",
+      "Claude Code"
+    ],
+    "problem_statement": "High cost and manual timeline friction when producing 50+ TikTok/Reels variants.",
+    "workflow_summary": "Deconstructs winning viral video hooks into SVML markup where visual assets dynamically anchor to spoken audio words.",
+    "reusable_prompt": "Deconstruct the provided reference MP4 into SVML schema. Anchor hook badge to word 1, kinetic text to words 1-9, and output compiled timeline JSON.",
+    "estimated_time_saved_hrs": 12.0,
+    "source_attribution": "@alex_prompter on X"
+  }
+]

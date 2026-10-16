@@ -1,0 +1,219 @@
+{
+  "metadata": {
+    "fps": 30,
+    "dimensions": {
+      "width": 1080,
+      "height": 1920
+    },
+    "total_words": 18,
+    "total_duration_ms": 6900
+  },
+  "words": [
+    {
+      "id": "w1",
+      "text": "Stop",
+      "start_ms": 0,
+      "end_ms": 320,
+      "start_frame": 0,
+      "end_frame": 9
+    },
+    {
+      "id": "w2",
+      "text": "paying",
+      "start_ms": 330,
+      "end_ms": 680,
+      "start_frame": 9,
+      "end_frame": 20
+    },
+    {
+      "id": "w3",
+      "text": "fifty",
+      "start_ms": 690,
+      "end_ms": 1100,
+      "start_frame": 20,
+      "end_frame": 33
+    },
+    {
+      "id": "w4",
+      "text": "dollars",
+      "start_ms": 1110,
+      "end_ms": 1540,
+      "start_frame": 33,
+      "end_frame": 46
+    },
+    {
+      "id": "w5",
+      "text": "every",
+      "start_ms": 1550,
+      "end_ms": 1820,
+      "start_frame": 46,
+      "end_frame": 54
+    },
+    {
+      "id": "w6",
+      "text": "month",
+      "start_ms": 1830,
+      "end_ms": 2250,
+      "start_frame": 54,
+      "end_frame": 67
+    },
+    {
+      "id": "w7",
+      "text": "for",
+      "start_ms": 2260,
+      "end_ms": 2500,
+      "start_frame": 67,
+      "end_frame": 75
+    },
+    {
+      "id": "w8",
+      "text": "bloated",
+      "start_ms": 2510,
+      "end_ms": 3100,
+      "start_frame": 75,
+      "end_frame": 93
+    },
+    {
+      "id": "w9",
+      "text": "software.",
+      "start_ms": 3110,
+      "end_ms": 3700,
+      "start_frame": 93,
+      "end_frame": 111
+    },
+    {
+      "id": "w10",
+      "text": "Here",
+      "start_ms": 3800,
+      "end_ms": 4100,
+      "start_frame": 114,
+      "end_frame": 122
+    },
+    {
+      "id": "w11",
+      "text": "is",
+      "start_ms": 4110,
+      "end_ms": 4350,
+      "start_frame": 123,
+      "end_frame": 130
+    },
+    {
+      "id": "w12",
+      "text": "how",
+      "start_ms": 4360,
+      "end_ms": 4600,
+      "start_frame": 130,
+      "end_frame": 138
+    },
+    {
+      "id": "w13",
+      "text": "AI",
+      "start_ms": 4610,
+      "end_ms": 4850,
+      "start_frame": 138,
+      "end_frame": 145
+    },
+    {
+      "id": "w14",
+      "text": "clones",
+      "start_ms": 4860,
+      "end_ms": 5300,
+      "start_frame": 145,
+      "end_frame": 159
+    },
+    {
+      "id": "w15",
+      "text": "it",
+      "start_ms": 5310,
+      "end_ms": 5600,
+      "start_frame": 159,
+      "end_frame": 168
+    },
+    {
+      "id": "w16",
+      "text": "in",
+      "start_ms": 5610,
+      "end_ms": 5800,
+      "start_frame": 168,
+      "end_frame": 174
+    },
+    {
+      "id": "w17",
+      "text": "four",
+      "start_ms": 5810,
+      "end_ms": 6200,
+      "start_frame": 174,
+      "end_frame": 186
+    },
+    {
+      "id": "w18",
+      "text": "minutes.",
+      "start_ms": 6210,
+      "end_ms": 6900,
+      "start_frame": 186,
+      "end_frame": 207
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene_hook",
+      "start_ms": 0,
+      "end_ms": 3700,
+      "start_frame": 0,
+      "end_frame": 111,
+      "transition": "whip_left",
+      "elements": [
+        {
+          "type": "badge",
+          "text": "\ud83d\udea8 AI RADICAL SHIFT",
+          "start_frame": 0,
+          "end_frame": 9,
+          "style": "bg-red-600 text-white font-bold",
+          "highlight_color": "#FFFFFF"
+        },
+        {
+          "type": "kinetic_text",
+          "text": "",
+          "start_frame": 0,
+          "end_frame": 111,
+          "style": "",
+          "highlight_color": "#EF4444"
+        }
+      ]
+    },
+    {
+      "id": "scene_solution",
+      "start_ms": 3800,
+      "end_ms": 6900,
+      "start_frame": 114,
+      "end_frame": 207,
+      "transition": "zoom_in",
+      "elements": [
+        {
+          "type": "badge",
+          "text": "\u26a1 REA ENGINE",
+          "start_frame": 114,
+          "end_frame": 122,
+          "style": "bg-cyan-500 text-black font-extrabold",
+          "highlight_color": "#FFFFFF"
+        },
+        {
+          "type": "screen_recording",
+          "text": "",
+          "start_frame": 138,
+          "end_frame": 145,
+          "style": "",
+          "highlight_color": "#FFFFFF"
+        },
+        {
+          "type": "kinetic_text",
+          "text": "",
+          "start_frame": 114,
+          "end_frame": 207,
+          "style": "",
+          "highlight_color": "#06B6D4"
+        }
+      ]
+    }
+  ]
+}

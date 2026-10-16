@@ -1,0 +1,156 @@
+"""
+Agent Use Cases Curation & Directory Engine
+Models the agentusecases.ai architecture for scraping, categorizing, and publishing verified agent workflows.
+"""
+
+import json
+import os
+from dataclasses import dataclass, asdict
+from typing import List
+
+@dataclass
+class AgentUseCase:
+    id: str
+    title: str
+    category: str
+    target_agents: List[str]
+    problem_statement: str
+    workflow_summary: str
+    reusable_prompt: str
+    estimated_time_saved_hrs: float
+    source_attribution: str
+
+SAMPLE_CASES = [
+    AgentUseCase(
+        id="case-001",
+        title="Full-Stack Clean-Room Software Cloning",
+        category="Software & DevOps",
+        target_agents=["Claude Code", "Grok Build", "Antigravity"],
+        problem_statement="Overpaying $50/mo for bloated single-purpose developer utilities.",
+        workflow_summary="Uses REA to inspect binary bundles, extract API routes and state types, then generates a Next.js + FastAPI clone in 10 minutes.",
+        reusable_prompt="Analyze this binary using REA. Extract all REST endpoints, generate an OpenAPI 3.1.0 specification, and scaffold a clean-room Tailwind UI replacement.",
+        estimated_time_saved_hrs=18.5,
+        source_attribution="@AlexFinn on X / REA Tools"
+    ),
+    AgentUseCase(
+        id="case-002",
+        title="Autonomous AI Receptionist & Call Dispatch",
+        category="Work & Operations",
+        target_agents=["Grok Voice 3.0", "ElevenLabs Agents"],
+        problem_statement="Small clinics and plumbing businesses missing after-hours emergency calls.",
+        workflow_summary="Hooks Grok Voice 3.0 to a Twilio SIP trunk and Google Calendar API for zero-latency appointment scheduling and triage.",
+        reusable_prompt="You are a front-desk receptionist for Dr. Smith Dental. Greet warmly, triage emergency vs routine inquiries, and invoke check_calendar() to book open slots.",
+        estimated_time_saved_hrs=35.0,
+        source_attribution="Grok Marketplace"
+    ),
+    AgentUseCase(
+        id="case-003",
+        title="Programmatic Word-Anchored Short-Form Video Cloning",
+        category="Content & Creative",
+        target_agents=["Hypit", "Codex", "Claude Code"],
+        problem_statement="High cost and manual timeline friction when producing 50+ TikTok/Reels variants.",
+        workflow_summary="Deconstructs winning viral video hooks into SVML markup where visual assets dynamically anchor to spoken audio words.",
+        reusable_prompt="Deconstruct the provided reference MP4 into SVML schema. Anchor hook badge to word 1, kinetic text to words 1-9, and output compiled timeline JSON.",
+        estimated_time_saved_hrs=12.0,
+        source_attribution="@alex_prompter on X"
+    )
+]
+
+def build_directory_site(cases: List[AgentUseCase], out_html_path: str):
+    cases_json = json.dumps([asdict(c) for c in cases], indent=2)
+    html_content = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agent Use Cases Hub</title>
+  <style>
+    body { background: #0A0D14; color: #E6EDF3; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 40px 20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 40px; }
+    h1 { font-size: 36px; margin-bottom: 8px; color: #58A6FF; }
+    p.subtitle { font-size: 16px; color: #8B949E; margin-top: 0; }
+    .search-box { width: 100%; padding: 14px 18px; border-radius: 10px; border: 1px solid #30363D; background: #161B22; color: #FFF; font-size: 16px; margin-bottom: 30px; box-sizing: border-box; }
+    .card-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    .card { background: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 24px; transition: transform 0.2s, border-color 0.2s; }
+    .card:hover { border-color: #58A6FF; transform: translateY(-2px); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #238636; color: #FFF; margin-bottom: 12px; }
+    .title { font-size: 20px; font-weight: 700; margin: 0 0 10px 0; color: #F0F6FC; }
+    .prompt-box { background: #0D1117; border: 1px solid #21262D; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 13px; color: #7EE787; margin-top: 14px; position: relative; }
+    .copy-btn { position: absolute; right: 10px; top: 10px; background: #21262D; border: 1px solid #30363D; color: #C9D1D9; border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer; }
+    .copy-btn:hover { background: #30363D; }
+    .lead-magnet { margin-top: 50px; background: linear-gradient(135deg, #1f2937, #111827); border: 1px solid #374151; padding: 30px; border-radius: 12px; text-align: center; }
+    .email-input { padding: 12px; width: 300px; border-radius: 8px; border: 1px solid #4B5563; background: #1F2937; color: #FFF; }
+    .submit-btn { padding: 12px 20px; border-radius: 8px; border: none; background: #2563EB; color: #FFF; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Agent Use Cases Directory</h1>
+      <p class="subtitle">Verified real-world agent blueprints, prompts, and automation architectures.</p>
+    </header>
+
+    <input type="text" id="search" class="search-box" placeholder="Search by keyword, agent (e.g. Grok, Claude), or category..." onkeyup="filterCases()">
+
+    <div id="grid" class="card-grid"></div>
+
+    <div class="lead-magnet">
+      <h3>Get the Weekly Agent Playbook</h3>
+      <p style="color:#9CA3AF; font-size: 14px;">Join 25,000+ builders getting verified agent workflows every Tuesday.</p>
+      <input type="email" class="email-input" placeholder="you@company.com">
+      <button class="submit-btn" onclick="alert('Subscribed to Agent Playbook!')">Subscribe Free</button>
+    </div>
+  </div>
+
+  <script>
+    const data = """ + cases_json + r""";
+    const grid = document.getElementById('grid');
+
+    function renderCases(items) {
+      grid.innerHTML = items.map(c => `
+        <div class="card">
+          <span class="badge">${c.category}</span>
+          <div style="font-size: 12px; color: #8B949E; float: right;">⚡ ${c.estimated_time_saved_hrs} hrs saved/mo</div>
+          <h2 class="title">${c.title}</h2>
+          <div style="font-size: 14px; color: #8B949E; margin-bottom: 8px;"><strong>Agents:</strong> ${c.target_agents.join(', ')}</div>
+          <p style="font-size: 14px; color: #C9D1D9; margin: 0 0 10px 0;">${c.workflow_summary}</p>
+          <div class="prompt-box">
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(\`${c.reusable_prompt.replace(/`/g, '\\`')}\`); alert('Copied prompt to clipboard!');">Copy Prompt</button>
+            ${c.reusable_prompt}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCases() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const filtered = data.filter(c => 
+        c.title.toLowerCase().includes(q) || 
+        c.category.toLowerCase().includes(q) || 
+        c.target_agents.some(a => a.toLowerCase().includes(q))
+      );
+      renderCases(filtered);
+    }
+
+    renderCases(data);
+  </script>
+</body>
+</html>
+"""
+    with open(out_html_path, "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+def main():
+    out_dir = os.path.dirname(__file__)
+    data_path = os.path.join(out_dir, "use_cases.json")
+    with open(data_path, "w", encoding="utf-8") as f:
+        json.dump([asdict(c) for c in SAMPLE_CASES], f, indent=2)
+
+    site_path = os.path.join(out_dir, "index.html")
+    build_directory_site(SAMPLE_CASES, site_path)
+    print(f"[✓] Curated {len(SAMPLE_CASES)} verified agent use cases.")
+    print(f"[✓] Saved database to: {data_path}")
+    print(f"[✓] Generated search-enabled directory site: {site_path}")
+
+if __name__ == "__main__":
+    main()

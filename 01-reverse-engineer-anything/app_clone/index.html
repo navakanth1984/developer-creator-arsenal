@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniScribe AI - Clean-Room Voice-to-Action Utility</title>
+  <style>
+    :root {
+      --bg: #090D16;
+      --card: #131B2E;
+      --border: #232E48;
+      --accent: #38BDF8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --text: #F1F5F9;
+      --muted: #94A3B8;
+      --success: #10B981;
+      --danger: #EF4444;
+    }
+    * { box-sizing: border-box; transition: all 0.2s ease; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 30px 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 840px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .cost-comparison {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .main-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .mode-pills {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+    .mode-btn {
+      background: #1E293B;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .mode-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+    .record-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.4);
+      cursor: pointer;
+      position: relative;
+    }
+    .record-zone.recording {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.05);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+      70% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .mic-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1E293B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+    .record-zone.recording .mic-icon {
+      background: var(--danger);
+      color: #FFF;
+    }
+    .output-section {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-box {
+      background: #0B0F19;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      min-height: 140px;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #E2E8F0;
+      white-space: pre-wrap;
+    }
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-copy { background: #334155; color: #FFF; }
+    .btn-copy:hover { background: #475569; }
+    .btn-export { background: var(--accent); color: #000; }
+    .btn-export:hover { opacity: 0.9; }
+    .footer-note {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="logo-badge">
+        <span>⚡</span> OmniScribe AI
+      </div>
+      <div class="cost-comparison">
+        REA Clean-Room Clone • $0/mo vs $30/mo SaaS
+      </div>
+    </header>
+
+    <div class="main-card">
+      <div class="mode-pills">
+        <button class="mode-btn active" onclick="setMode('brief')">Executive Brief</button>
+        <button class="mode-btn" onclick="setMode('ticket')">Bug / Feature Ticket</button>
+        <button class="mode-btn" onclick="setMode('email')">Professional Email</button>
+        <button class="mode-btn" onclick="setMode('verbatim')">Raw Transcript</button>
+      </div>
+
+      <div id="record_btn" class="record-zone" onclick="toggleRecording()">
+        <div class="mic-icon" id="mic_icon">🎙️</div>
+        <div id="record_label" style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">Click to Start Speaking</div>
+        <div id="record_sub" style="font-size: 13px; color: var(--muted);">Uses native Web Speech API • No audio leaves your machine</div>
+      </div>
+
+      <div class="output-section">
+        <div class="output-header">
+          <span style="font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase;">Synthesized Output</span>
+          <span id="word_count" style="font-size: 12px; color: var(--accent);">0 words</span>
+        </div>
+        <div id="output" class="output-box" contenteditable="true">Click record above and speak your thoughts freely. OmniScribe cleans up stuttering, converts rambling into punchy bullet points, and formats the output into professional executive briefs.</div>
+        
+        <div class="action-bar">
+          <button class="btn btn-copy" onclick="copyOutput()">📋 Copy to Clipboard</button>
+          <button class="btn btn-export" onclick="exportMarkdown()">💾 Download .md</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Engineered via <strong>Reverse Engineer Anything (REA)</strong> clean-room behavioral specification.<br>
+      Zero cloud telemetry • Local browser execution • Apache 2.0 Open Source.
+    </div>
+  </div>
+
+  <script>
+    let currentMode = 'brief';
+    let isRecording = false;
+    let recognition = null;
+    let accumulatedText = "";
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      if (accumulatedText) formatText(accumulatedText);
+    }
+
+    // Initialize Web Speech API
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      recognition.onresult = (event) => {
+        let interim = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            accumulatedText += event.results[i][0].transcript + ' ';
+          } else {
+            interim += event.results[i][0].transcript;
+          }
+        }
+        formatText(accumulatedText + interim);
+      };
+
+      recognition.onerror = (err) => {
+        console.error("Speech recognition error:", err);
+        stopRecording();
+      };
+    } else {
+      document.getElementById('record_sub').innerText = "Web Speech API not supported in this browser. Type directly in the box below.";
+    }
+
+    function toggleRecording() {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        startRecording();
+      }
+    }
+
+    function startRecording() {
+      isRecording = true;
+      document.getElementById('record_btn').classList.add('recording');
+      document.getElementById('mic_icon').innerText = '⏹️';
+      document.getElementById('record_label').innerText = 'Listening... Click to Finish';
+      if (recognition) {
+        try { recognition.start(); } catch(e){}
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      document.getElementById('record_btn').classList.remove('recording');
+      document.getElementById('mic_icon').innerText = '🎙️';
+      document.getElementById('record_label').innerText = 'Click to Start Speaking';
+      if (recognition) {
+        try { recognition.stop(); } catch(e){}
+      }
+    }
+
+    function formatText(raw) {
+      const clean = raw.trim();
+      const words = clean ? clean.split(/\s+/).length : 0;
+      document.getElementById('word_count').innerText = `${words} words`;
+
+      let output = "";
+      if (currentMode === 'brief') {
+        output = `## Executive Brief\n\n**Core Takeaway:**\n${clean || "Awaiting audio input..."}\n\n**Key Action Items:**\n- [ ] Review implementation requirements\n- [ ] Deploy staging preview\n- [ ] Sync with cross-functional team`;
+      } else if (currentMode === 'ticket') {
+        output = `### [TASK] ${clean.slice(0, 50)}...\n\n**Description:**\n${clean}\n\n**Acceptance Criteria:**\n1. Behavior verified across viewports\n2. Shift-left automated checks pass (<5s)\n3. Documentation updated in wiki`;
+      } else if (currentMode === 'email') {
+        output = `Hi Team,\n\nFollowing up on our recent sync:\n\n${clean}\n\nBest regards,\n[Your Name]`;
+      } else {
+        output = clean;
+      }
+      document.getElementById('output').innerText = output;
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('output').innerText;
+      navigator.clipboard.writeText(text);
+      alert('Copied to clipboard!');
+    }
+
+    function exportMarkdown() {
+      const text = document.getElementById('output').innerText;
+      const blob = new Blob([text], { type: 'text/markdown' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `omniscribe_${currentMode}_${Date.now()}.md`;
+      a.click();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Million Pixel AI Canvas - Viral Real-Time Attention Engine</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #0B0E14;
+      color: #E6EDF3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      height: 100vh;
+    }
+    #sidebar {
+      width: 380px;
+      background: #161B22;
+      border-right: 1px solid #30363D;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 10;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+    h1 { font-size: 22px; margin: 0 0 6px 0; color: #58A6FF; }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      background: #0D1117;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #21262D;
+      margin-bottom: 16px;
+    }
+    .stat-item { text-align: center; }
+    .stat-label { font-size: 11px; color: #8B949E; text-transform: uppercase; }
+    .stat-val { font-size: 18px; font-weight: 700; color: #39D353; }
+    .selection-panel {
+      background: #0D1117;
+      border: 1px solid #30363D;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .selection-title { font-size: 13px; font-weight: 600; color: #8B949E; margin-bottom: 8px; }
+    .pixel-coords { font-family: monospace; font-size: 14px; color: #79C0FF; }
+    .price-tag { font-size: 24px; font-weight: 800; color: #FFF; margin: 10px 0; }
+    .input-field {
+      width: 100%;
+      background: #161B22;
+      border: 1px solid #30363D;
+      border-radius: 6px;
+      padding: 10px;
+      color: #FFF;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .btn-buy {
+      width: 100%;
+      background: linear-gradient(135deg, #238636, #2EA043);
+      color: #FFF;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-buy:hover { opacity: 0.9; }
+    .btn-share {
+      width: 100%;
+      background: #1D9BF0;
+      color: #FFF;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      display: none;
+    }
+    #viewport {
+      flex: 1;
+      position: relative;
+      background: #010409;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+    canvas {
+      image-rendering: pixelated;
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
+      border: 1px solid #30363D;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(22, 27, 34, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid #30363D;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #8B949E;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar">
+    <div>
+      <h1>1 Million Pixels AI Grid</h1>
+      <p style="font-size: 12px; color: #8B949E; margin-top: 0;">Own permanent internet real estate. 1 pixel = $1 USD.</p>
+      
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-label">Claimed</div>
+          <div class="stat-val" id="stat_claimed">37,420</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Available</div>
+          <div class="stat-val" style="color:#58A6FF;">962,580</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Revenue</div>
+          <div class="stat-val" style="color:#E3B341;">$37,420</div>
+        </div>
+      </div>
+
+      <div class="selection-panel">
+        <div class="selection-title">SELECTED PIXEL BLOCK</div>
+        <div class="pixel-coords" id="coords_display">X: 120..130, Y: 80..90 (100 px)</div>
+        <div class="price-tag" id="price_display">$100 USD</div>
+        
+        <input type="text" id="target_url" class="input-field" placeholder="https://yourproduct.com">
+        <input type="text" id="alt_title" class="input-field" placeholder="Hover Tooltip / Company Name">
+        <input type="color" id="block_color" value="#00F2FE" style="width: 100%; height: 36px; border-radius: 6px; cursor: pointer; margin-bottom: 12px; background: transparent; border: 1px solid #30363D;">
+
+        <button class="btn-buy" id="buy_btn" onclick="simulateClaim()">⚡ Claim Pixels via Stripe</button>
+        <button class="btn-share" id="share_btn" onclick="shareToTwitter()">🚀 Tweet Milestone</button>
+      </div>
+    </div>
+
+    <div style="font-size: 11px; color: #484F58; text-align: center;">
+      Built with Vibe-Coding High-Concurrency Canvas Engine
+    </div>
+  </div>
+
+  <div id="viewport">
+    <div class="hud">Scroll to Zoom • Drag to Pan • Click & Drag to Select</div>
+    <canvas id="grid_canvas" width="1000" height="1000"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('grid_canvas');
+    const ctx = canvas.getContext('2d');
+    let claimedCount = 37420;
+
+    // Draw initial dummy claimed patches to give authentic "Million Dollar Homepage" vibe
+    ctx.fillStyle = '#0F141C';
+    ctx.fillRect(0, 0, 1000, 1000);
+
+    // Seed some viral blocks
+    const colors = ['#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#06B6D4'];
+    for(let i=0; i<45; i++) {
+      ctx.fillStyle = colors[i % colors.length];
+      const rx = Math.floor(Math.random() * 950);
+      const ry = Math.floor(Math.random() * 950);
+      const rw = Math.floor(Math.random() * 40) + 10;
+      const rh = Math.floor(Math.random() * 40) + 10;
+      ctx.fillRect(rx, ry, rw, rh);
+    }
+
+    let selX = 120, selY = 80, selW = 10, selH = 10;
+
+    function renderSelection() {
+      // Re-render
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(selX, selY, selW, selH);
+    }
+
+    renderSelection();
+
+    function simulateClaim() {
+      const color = document.getElementById('block_color').value;
+      const url = document.getElementById('target_url').value || 'https://mycoolai.com';
+      const count = selW * selH;
+
+      ctx.fillStyle = color;
+      ctx.fillRect(selX, selY, selW, selH);
+
+      claimedCount += count;
+      document.getElementById('stat_claimed').innerText = claimedCount.toLocaleString();
+      document.getElementById('buy_btn').style.display = 'none';
+      document.getElementById('share_btn').style.display = 'block';
+
+      alert(`Success! Block [${selX}, ${selY}] (${count} pixels) claimed for $${count}.`);
+    }
+
+    function shareToTwitter() {
+      const text = encodeURIComponent(`I just claimed a ${selW}x${selH} pixel block on the Million Pixels AI Grid at coordinates [${selX}, ${selY}]! Check it out:`);
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=https://1milllionpixels.com`, '_blank');
+    }
+  </script>
+</body>
+</html>
