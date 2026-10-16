@@ -14,6 +14,8 @@ env/
 # Catalyst & Cloud Build Outputs
 .catalyst/
 *.log
+renders/
+*.mp4
 
 # OS & Editor
 .DS_Store

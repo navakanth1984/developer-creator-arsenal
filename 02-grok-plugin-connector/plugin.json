@@ -5,8 +5,8 @@
   "displayName": "Enterprise Code & Security Auditor",
   "description": "Deeply audits codebase architecture, detects secret leaks, scans API endpoints, and enforces software governance for Grok agents.",
   "author": {
-    "name": "Autonomous Creator Labs",
-    "url": "https://github.com/developer-creator-arsenal"
+    "name": "navakanth1984",
+    "url": "https://github.com/navakanth1984/developer-creator-arsenal"
   },
   "homepage": "https://x.ai/bot/marketplace",
   "entrypoint": "mcp_server.py",

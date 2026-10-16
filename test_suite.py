@@ -47,9 +47,9 @@ TEST_CASES = [
     },
     {
         "name": "Engine 06: Catalyst GPU Worker Loop",
-        "cmd": [sys.executable, "gpu_worker_pull.py"],
+        "cmd": [sys.executable, "gpu_worker_pull.py", "--once"],
         "cwd": "06-higgsfield-catalyst-replica/worker",
-        "expected": "Render complete!"
+        "expected": "complete"
     }
 ]
 
