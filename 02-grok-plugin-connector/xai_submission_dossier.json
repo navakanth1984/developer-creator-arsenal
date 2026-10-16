@@ -1,0 +1,17 @@
+{
+  "plugin_name": "enterprise-code-security-auditor",
+  "display_name": "Enterprise Code & Security Auditor",
+  "developer_handle": "@navakanth1984",
+  "author": "navakanth1984",
+  "repository_url": "https://github.com/navakanth1984/developer-creator-arsenal/tree/master/02-grok-plugin-connector",
+  "raw_manifest_url": "https://raw.githubusercontent.com/navakanth1984/developer-creator-arsenal/master/02-grok-plugin-connector/plugin.json",
+  "release_tag": "https://github.com/navakanth1984/developer-creator-arsenal/releases/tag/v1.0.0",
+  "protocol": "Model Context Protocol (MCP) JSON-RPC 2.0",
+  "category": "Developer Tools & Code Security",
+  "tools_exposed": [
+    "audit_codebase_security (static vulnerability and credential leak detection)",
+    "generate_remediation_patch (generates surgical unified diff patches)"
+  ],
+  "verification_command": "python mcp_server.py --test",
+  "marketplace_form_url": "https://x.ai/bot/marketplace/submit-a-plugin"
+}
