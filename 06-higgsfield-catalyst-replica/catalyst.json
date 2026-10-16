@@ -1,38 +1,17 @@
 {
-  "name": "higgsfield-catalyst-replica",
-  "version": "1.0.0",
-  "description": "Open-Weights Sovereign Higgsfield Video AI Studio deployed on Zoho Catalyst",
-  "client": {
-    "source": "client"
-  },
-  "functions": [
-    {
-      "name": "higgsfield_api",
-      "type": "AdvancedIO",
-      "runtime": "python3.11",
-      "source": "functions/higgsfield_api"
-    }
-  ],
-  "appSail": [
-    {
-      "name": "inference-dispatcher",
-      "source": "appsail/dispatcher",
-      "build": "DOCKER",
-      "port": 8000
-    }
-  ],
-  "dataStore": {
-    "tables": [
-      "GenerationJobs",
-      "SoulProfiles",
-      "AssetMedia"
+  "functions": {
+    "targets": [
+      "higgsfield_api"
+    ],
+    "ignore": [
+      "*.log",
+      "__pycache__"
     ]
   },
-  "fileStore": {
-    "folders": [
-      "raw_uploads",
-      "soul_references",
-      "rendered_videos"
+  "client": {
+    "source": "client",
+    "ignore": [
+      "*.log"
     ]
   }
 }

@@ -1,0 +1,6 @@
+{
+  "name": "higgsfield_api",
+  "type": "AdvancedIO",
+  "stack": "python3.11",
+  "main": "main.py"
+}
